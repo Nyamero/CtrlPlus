@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>コード送信フォーム</title>
+  <style>
+    body {
+      background-color: #1e1e1e;
+      color: #d4d4d4;
+      font-family: 'Consolas', 'Courier New', monospace;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .editor-container {
+      background-color: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 6px;
+      box-shadow: 0 0 10px #000;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .editor-label {
+      margin-bottom: 10px;
+      display: block;
+      font-size: 1rem;
+      color: #9cdcfe;
+    }
+
+    textarea {
+      width: 100%;
+      height: 400px;
+      background-color: #1e1e1e;
+      color: #dcdcdc;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      font-family: 'Consolas', 'Courier New', monospace;
+      line-height: 1.5;
+      resize: vertical;
+      padding: 10px;
+      box-sizing: border-box;
+      border-left: 4px solid #007acc;
+    }
+
+    .submit-button {
+      margin-top: 20px;
+      background-color: #007acc;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .submit-button:hover {
+      background-color: #005f9e;
+    }
+  </style>
+</head>
+<body>
+  <div class="editor-container">
+    <form method="post" action="/YourServletPath">
+      <label class="editor-label" for="code">コードを入力してください:</label>
+      <textarea id="code" name="code" placeholder="// ここにコードを入力..."></textarea>
+      <button type="submit" class="submit-button">送信</button>
+    </form>
+  </div>
+</body>
+</html>

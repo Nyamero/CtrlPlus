@@ -1,0 +1,31 @@
+The syntax of Ctrl+ in Backus-Naur Form
+
+<translation-unit> ::= <declaration>
+
+<declaration> ::= {<compound-command>}*
+
+<compound-command> ::= <command>
+					 | <pointer>
+					 | <heap>
+					 | <binary>
+
+<command> ::= <calculate>
+			| <stack>
+
+<pointer> ::= "copy" {"copy" | <heap> }+ "paste"
+			| "copy" { <stack> }? { <heap> }? { "copy" }+ "paste"
+
+<heap> ::= "cut" <command-identifier>
+
+<binary> ::= "undo" {<command-identifier>}* "undo"
+
+<stack> ::= "redo" "redo" {<command-specifier>}+ {<command-specifier>}? "undo"
+
+<calculate> ::= "redo" {<command-specifier>}+ {<command-specifier>}? "undo"
+
+<command-specifier> ::= "cut"
+					  | "redo"
+					  | "undo"
+					
+<command-identifier> ::= "copy"
+					   | "paste" 
