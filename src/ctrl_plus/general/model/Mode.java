@@ -1,6 +1,6 @@
-package ctrl_plus.general.enums;
+package ctrl_plus.general.model;
 
-public enum EnumModeKind {
+public enum Mode {
 	
 	COPY,
 	CUT,
@@ -8,7 +8,7 @@ public enum EnumModeKind {
 	REDO_REDO,
 	UNDO;
 	
-	public String getKindStr(EnumModeKind kind) {
+	public String getKindStr(Mode kind) {
 		
 		switch (kind) {
 		case COPY:			return "COPY";

@@ -1,17 +1,19 @@
 package ctrl_plus.compiler.core.nodes;
 
 import ctrl_plus.compiler.core.visitor.ASTVisitor;
-import ctrl_plus.general.enums.EnumOperatorKind;
+import ctrl_plus.general.model.Operator;
 
 public class ArithmeticNode extends ASTNode {
-
-	private final EnumOperatorKind operator;
 	
-	public ArithmeticNode(EnumOperatorKind operator) {
+	
+
+	private final Operator operator;
+	
+	public ArithmeticNode(Operator operator) {
 		this.operator = operator;
 	}
 
-	public EnumOperatorKind getOperator() {
+	public Operator getOperator() {
 		return operator;
 	}
 	

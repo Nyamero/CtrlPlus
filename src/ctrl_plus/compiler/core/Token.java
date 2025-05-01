@@ -1,25 +1,25 @@
 package ctrl_plus.compiler.core;
 
-import ctrl_plus.general.enums.EnumKind;
+import ctrl_plus.general.model.Kind;
 
 public class Token {
 	
 	// プライベート フィールド
 	private String str;
-	private EnumKind kind;
+	private Kind kind;
 	
 	// コンストラクタ
-	public Token(EnumKind kind, String str) {
+	public Token(Kind kind, String str) {
 		this.kind = kind;
 		this.str = str;
 	}
 	
-	public Token(EnumKind kind) {
+	public Token(Kind kind) {
 		this(kind, "");
 	}
 	
 	public Token() {
-		this(EnumKind.NULLTOKEN, "");
+		this(Kind.NULLTOKEN, "");
 	}
 
 	// セッター
@@ -27,7 +27,7 @@ public class Token {
 		this.str = str;
 	}
 	
-	public void setKind(EnumKind kind) {
+	public void setKind(Kind kind) {
 		this.kind = kind;
 	}
 	
@@ -36,7 +36,7 @@ public class Token {
 		return str;
 	}
 	
-	public EnumKind getKind() {
+	public Kind getKind() {
 		return kind;
 	}
 	

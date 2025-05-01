@@ -1,7 +1,7 @@
 package ctrl_plus.compiler.core;
 
-import ctrl_plus.general.enums.EnumKind;
 import ctrl_plus.general.exception.ParsingException;
+import ctrl_plus.general.model.Kind;
 
 public class Parser {
 
@@ -54,7 +54,7 @@ public class Parser {
 	void declaration() {
 		enterNode();
 
-		while (!expect(EnumKind.NULLTOKEN) && !expect(EnumKind.EOFTOKEN) && !expect(EnumKind.OTHER)) {
+		while (!expect(Kind.NULLTOKEN) && !expect(Kind.EOFTOKEN) && !expect(Kind.OTHER)) {
 			compoundCommand();
 		}
 
@@ -106,7 +106,7 @@ public class Parser {
 		enterNode();
 
 		// 現在来ているトークン: 1つめのredoの「次」
-		if (expect(EnumKind.REDO)) { // もう一回来た場合: stack
+		if (expect(Kind.REDO)) { // もう一回来た場合: stack
 			advance(); // 2つめのredoを消費する
 			stack(); // stackへ受け渡し
 		} else { // redo以外が来た場合: スタック操作コマンド
@@ -126,7 +126,7 @@ public class Parser {
 		int ptr = 0;
 
 		// 現在来ているトークン: モード変更したcopyの「次」
-		while (!expect(EnumKind.NULLTOKEN) && !expect(EnumKind.OTHER) && !expect(EnumKind.EOFTOKEN) && !expect(EnumKind.PASTE)) {
+		while (!expect(Kind.NULLTOKEN) && !expect(Kind.OTHER) && !expect(Kind.EOFTOKEN) && !expect(Kind.PASTE)) {
 			switch (currentToken.getKind()) {
 			case COPY: // ポインタ進める
 				ptr++;
@@ -136,7 +136,7 @@ public class Parser {
 				break;
 			case REDO: // <command>(スタック操作モードのみ許容)
 				advance();
-				if (expect(EnumKind.REDO)) {
+				if (expect(Kind.REDO)) {
 					advance(); // 2つめのadvanceを消費
 					stack(); // スタック操作モードへ
 				} else {
@@ -151,7 +151,7 @@ public class Parser {
 				reportError("Only heap or stack operations can be performed during pointer operations");
 			}
 		}
-		if (expect(EnumKind.PASTE)) {
+		if (expect(Kind.PASTE)) {
 			printDebug("Pointer value: " + ptr + ", Character: '");
 			advance();
 		} else {			
@@ -190,7 +190,7 @@ public class Parser {
 		enterNode();
 
 		// トークンチェック
-		if (!expect(EnumKind.COPY) && !expect(EnumKind.PASTE) && !expect(EnumKind.UNDO)) {
+		if (!expect(Kind.COPY) && !expect(Kind.PASTE) && !expect(Kind.UNDO)) {
 			reportError("Invalid command in numeric mode");
 		}
 
@@ -198,9 +198,9 @@ public class Parser {
 
 		long value = 0;
 		String binStr = "";
-		if (expect(EnumKind.COPY) || expect(EnumKind.PASTE)) {
-			while (expect(EnumKind.COPY) || expect(EnumKind.PASTE)) {
-				if (expect(EnumKind.COPY)) {
+		if (expect(Kind.COPY) || expect(Kind.PASTE)) {
+			while (expect(Kind.COPY) || expect(Kind.PASTE)) {
+				if (expect(Kind.COPY)) {
 					value = bin2Dec(value, false);
 					binStr += "0";
 				} else {
@@ -210,7 +210,7 @@ public class Parser {
 				advance();
 			}
 		}
-		if (!expect(EnumKind.UNDO)) {
+		if (!expect(Kind.UNDO)) {
 			reportError("Numeric mode must end with UNDO");
 		}
 
@@ -229,29 +229,29 @@ public class Parser {
 		enterNode();
 
 		// 現在来ているトークン: モード変更したredoの「次」
-		if (expect(EnumKind.EOFTOKEN)) {
+		if (expect(Kind.EOFTOKEN)) {
 			reportError("Invalid command in calculation mode");
 		}
 
 		switch (currentToken.getKind()) {
 		case COPY:
 			advance();
-			if (expect(EnumKind.UNDO)) {
+			if (expect(Kind.UNDO)) {
 				// copy: 加算
 				/** @todo データスタック加算処理 
 				 * 数値と文字列の計算が起きたらどうしよう */
-			} else if (expect(EnumKind.PASTE)) {
+			} else if (expect(Kind.PASTE)) {
 				// copy paste: 乗算
 				/** @todo データスタック乗算処理 */
 				advance();
-				if (!expect(EnumKind.UNDO)) {
+				if (!expect(Kind.UNDO)) {
 					reportError("Calculation command not closed");					
 				}
-			} else if (expect(EnumKind.COPY)) {
+			} else if (expect(Kind.COPY)) {
 				// copy copy: 除算
 				/** @todo データスタック除算処理 */
 				advance();
-				if (!expect(EnumKind.UNDO)) {
+				if (!expect(Kind.UNDO)) {
 					reportError("Calculation command not closed");					
 				}
 			} else {
@@ -260,14 +260,14 @@ public class Parser {
 			break;
 		case PASTE:
 			advance();
-			if (expect(EnumKind.UNDO)) {
+			if (expect(Kind.UNDO)) {
 				// paste: 減算
 				/** @todo データスタック減算処理 */
-			} else if (expect(EnumKind.PASTE)) {
+			} else if (expect(Kind.PASTE)) {
 				// paste paste: 剰余
 				/** @todo データスタック剰余処理 */
 				advance();
-				if (!expect(EnumKind.UNDO)) {
+				if (!expect(Kind.UNDO)) {
 					reportError("Calculation command not closed");					
 				}
 
@@ -291,28 +291,28 @@ public class Parser {
 		enterNode();
 
 		// 現在来ているトークン: モード変更したredo redoの「次」
-		if (expect(EnumKind.EOFTOKEN)) {
+		if (expect(Kind.EOFTOKEN)) {
 			reportError("Invalid command in calculation mode");
 		}
 
 		switch (currentToken.getKind()) {
 		case COPY:
 			advance();
-			if (expect(EnumKind.UNDO)) {
+			if (expect(Kind.UNDO)) {
 				// copy: 命令スタックの一番上を複製
 				/** @todo 命令スタック複製処理 */
-			} else if (expect(EnumKind.PASTE)) {
+			} else if (expect(Kind.PASTE)) {
 				// copy paste: 命令スタックの一番上をコピーして上に積む
 				/** @todo 命令スタックコピーして載せる処理 */
 				advance();
-				if (!expect(EnumKind.UNDO)) {
+				if (!expect(Kind.UNDO)) {
 					reportError("Stack command not closed");					
 				}
-			} else if (expect(EnumKind.COPY)) {
+			} else if (expect(Kind.COPY)) {
 				// copy copy: 命令スタックの一番上と二番目を交換
 				/** @todo 命令スタックの交換処理 */
 				advance();
-				if (!expect(EnumKind.UNDO)) {
+				if (!expect(Kind.UNDO)) {
 					reportError("Stack command not closed");					
 				}
 			} else {
@@ -321,14 +321,14 @@ public class Parser {
 			break;
 		case PASTE:
 			advance();
-			if (expect(EnumKind.UNDO)) {
+			if (expect(Kind.UNDO)) {
 				// paste: 命令スタックの一番上を捨てる
 				/** @todo 命令スタック廃棄処理 */
-			} else if (expect(EnumKind.PASTE)) {
+			} else if (expect(Kind.PASTE)) {
 				// paste paste: データスタックの一番上を出力
 				/** @todo データスタック出力処理 */
 				advance();
-				if (!expect(EnumKind.UNDO)) {
+				if (!expect(Kind.UNDO)) {
 					reportError("Stack command not closed");					
 				}
 			} else {
@@ -363,7 +363,7 @@ public class Parser {
 	 * @param expectedKind
 	 * @return boolean
 	 */
-	private boolean expect(EnumKind expectedKind) {
+	private boolean expect(Kind expectedKind) {
 		try {
 			if (currentToken.getKind().equals(expectedKind)) {
 				return true;

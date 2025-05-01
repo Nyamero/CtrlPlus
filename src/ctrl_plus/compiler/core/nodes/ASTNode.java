@@ -7,7 +7,7 @@ import ctrl_plus.compiler.core.visitor.ASTVisitor;
 
 public abstract class ASTNode {
 	
-	protected List<ASTNode> children = new ArrayList<>();
+	private final List<ASTNode> children = new ArrayList<>();
 	
 	public void addChild(ASTNode child) {
 		children.add(child);

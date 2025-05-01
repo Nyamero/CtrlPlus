@@ -1,6 +1,6 @@
 package ctrl_plus.general.operationFrame;
 
-import ctrl_plus.general.enums.EnumOperations;
+import ctrl_plus.general.model.OperationKind;
 
 /**
  * ADD, MULなど
@@ -9,7 +9,7 @@ public class DoubleDestOp extends SingleDestOp {
 	
 	private int dest2;
 
-	public DoubleDestOp(int opNumber, EnumOperations op, int dest1, int dest2) {
+	public DoubleDestOp(int opNumber, OperationKind op, int dest1, int dest2) {
 		super(opNumber, op, dest1);
 		this.dest2 = dest2;
 	}

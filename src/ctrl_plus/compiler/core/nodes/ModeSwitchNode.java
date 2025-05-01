@@ -1,21 +1,21 @@
 package ctrl_plus.compiler.core.nodes;
 
 import ctrl_plus.compiler.core.visitor.ASTVisitor;
-import ctrl_plus.general.enums.EnumModeKind;
+import ctrl_plus.general.model.Mode;
 
 public class ModeSwitchNode extends ASTNode {
 
-	private final EnumModeKind mode;
+	private final Mode mode;
 	
 	/**
 	 * コンストラクタ
 	 * コマンド種別を指定
 	 */
-	public ModeSwitchNode(EnumModeKind mode) {
+	public ModeSwitchNode(Mode mode) {
 		this.mode = mode;
 	}
 	
-	public EnumModeKind getMode() {
+	public Mode getMode() {
 		return mode;
 	}
 	

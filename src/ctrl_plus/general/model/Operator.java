@@ -1,13 +1,13 @@
-package ctrl_plus.general.enums;
+package ctrl_plus.general.model;
 
-public enum EnumOperatorKind {
+public enum Operator {
 	ADD,
 	SUB,
 	MUL,
 	DIV,
 	MOD;
 	
-	public static String getKindStr(EnumOperatorKind kind) {
+	public static String getKindStr(Operator kind) {
 		switch (kind) {
 		case ADD: return "ADD";
 		case SUB: return "SUB";

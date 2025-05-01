@@ -23,15 +23,15 @@ public class LambdaDispatchVisitor implements ASTVisitor {
 	/**
 	 * Visitorの代替として動的切り替えできる処理を登録するMap
 	 */
-	private final Map<Class<? extends ASTNode>, Consumer<? extends ASTNode>> handlers;
+	private final Map<Class<? extends ASTNode>, Consumer<? extends ASTNode>> handlers = new HashMap<>();
 	
-	/**
-	 * コンストラクタ
-	 * 新しいマップをインスタンス化
-	 */
-	public LambdaDispatchVisitor() {
-		this.handlers = new HashMap<>();
-	}
+//	/**
+//	 * コンストラクタ
+//	 * 新しいマップをインスタンス化
+//	 */
+//	public LambdaDispatchVisitor() {
+//		this.handlers = new HashMap<>();
+//	}
 	
 	/**
 	 * 処理を登録
@@ -48,18 +48,54 @@ public class LambdaDispatchVisitor implements ASTVisitor {
 		handlers.put(nodeType, handler);
 	}
 	
-	@SuppressWarnings("unchecked")
+	
+	/**
+	 * ハンドラーを登録
+	 * @param <T> ASTNodeを継承したクラス
+	 * @param node
+	 */
 	private <T extends ASTNode> void dispatch(T node) {
-		// 処理を格納
-		Consumer<T> handler = (Consumer<T>) handlers.get(node.getClass());
-		if (handler != null) {
-			handler.accept(node);
-		} else {
-			// 処理が登録されていなかった場合のエラー出力
-			System.err.println("[WARN] No Handler registered for node type: ");
+//		System.out.println("[DEBUG] dispatch called for: " + node.getClass().getName());
+		
+		boolean matched = false;
+		for (Map.Entry<Class<? extends ASTNode>, Consumer<? extends ASTNode>> entry : handlers.entrySet()) {
+//			System.out.println("[DEBUG] checking handler for: " + entry.getKey().getName());
+			if (entry.getKey().isAssignableFrom(node.getClass())) {
+//				System.out.println("[DEBUG] matched handler: " + entry.getKey().getName());
+				Consumer<T> handler = (Consumer<T>) entry.getValue();
+				
+				// ハンドラーに登録した処理を実行
+				handler.accept(node);
+				// 成功した時点で終了
+				return;
+			}
+		}
+		
+		// 一度もマッチしなかった場合のみエラー表示
+		System.err.println("[WARN] No Handler registered for node type: ");
+	}
+	
+//	private <T extends ASTNode> void dispatch(T node) {
+//		// 処理を格納
+//		Consumer<T> handler = (Consumer<T>) handlers.get(node.getClass());
+//		if (handler != null) {
+//			handler.accept(node);
+//		} else {
+//			// 処理が登録されていなかった場合のエラー出力
+//			System.err.println("[WARN] No Handler registered for node type: ");
+//		}
+//	}
+	
+	/* -------- デバッグ用メソッド -------- */
+	public void dumpRegsteredHandlers() {
+		System.out.println("[INFO] Registered handler types:");
+		for (Class<? extends ASTNode> key : handlers.keySet()) {
+			System.out.println(" - " + key.getName());
 		}
 	}
 	
+	
+	/* ======== OVERRIDE METHODS ======== */
 	
 	@Override
 	public void visit(RootNode node) {

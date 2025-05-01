@@ -1,6 +1,6 @@
-package ctrl_plus.general.enums;
+package ctrl_plus.general.model;
 
-public enum EnumKind {
+public enum Kind {
 	
 	COPY,
 	PASTE,
@@ -12,7 +12,7 @@ public enum EnumKind {
 	NULLTOKEN,
 	EOFTOKEN;
 	
-	public String getKindStr(EnumKind kind) {
+	public String getKindStr(Kind kind) {
 		
 		switch (kind) {
 		case COPY:			return "COPY";
