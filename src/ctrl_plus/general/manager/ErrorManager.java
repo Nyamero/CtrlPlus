@@ -10,6 +10,6 @@ public class ErrorManager {
 	 *  >>> エラーメッセージ
 	 */
 	public static void syntaxError(Exception e) {
-		System.out.println("Syntax error(line " + InputManager.getInstance().getLine() + ", column " + InputManager.getInstance().getColumn() + "):\n >>>" + e.getMessage());
+		LogManager.getInstance().logError("Syntax error(line " + InputManager.getInstance().getLine() + ", column " + InputManager.getInstance().getColumn() + "):\n >>>" + e.getMessage());
 	}
 }
